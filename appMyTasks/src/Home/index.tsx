@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import {
     View,
     Text,
@@ -9,17 +9,17 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import { TaskList } from '../components/TaskList';
+import { TaskContext } from '../context/TasksContext';
 import { styles } from './styles'
 
-interface Task {
-    id: string;
-    title: string
-}
 
 export const Home = () => {
 
     const [newTask, setNewTask] = React.useState('')
-    const [tasks, setTasks] = React.useState<Task[]>([])
+
+
+    const { addTask } = React.useContext(TaskContext)
+
 
     const handleAddNewTask = () => {
         const data = {
@@ -27,7 +27,7 @@ export const Home = () => {
             title: newTask ? newTask : 'Task empty',
         };
 
-        setTasks([...tasks, data]);
+        addTask()
     };
 
     return (
@@ -53,7 +53,7 @@ export const Home = () => {
 
                 <Text style={styles.titleText}>Minhas Tarefas </Text>
 
-    <TaskList tasks = {tasks}/>
+                <TaskList />
                 <Text style={{ color: '#fff' }}>{newTask} </Text>
             </View>
         </SafeAreaView>
